@@ -50,7 +50,7 @@ class UserPanel extends Component {
         
         
         const { user } = this.state;
-        console.log(user);
+        // console.log(user);
         return (
         <Grid style={{background: '#4c3c4c'}}>
             <Grid.Column>
