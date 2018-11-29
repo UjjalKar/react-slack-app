@@ -22,3 +22,6 @@ yarn-error.log*
 
 # FIREBASE
 /src/components/firebase.js
+
+# Vscode
+.vscode
