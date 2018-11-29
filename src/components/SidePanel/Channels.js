@@ -9,31 +9,72 @@ import {
     Transition
 } from 'semantic-ui-react';
 
+import firebase from '../../firebase';
+
 class Channels extends Component {
     state = {
+        user: this.props.currentUser,
         channels: [],
         channelName: '',
         channelDetails: '',
-        modal: false
+        modal: false,
+        channelRef: firebase.database().ref('channels')
     }
 
+    
+    closeModal = () => {
+        this.setState({
+            modal: false
+        })
+    }
+    
+    openmodal = () => {
+        this.setState({
+            modal: true
+        })
+    }
+
+    addChannel = () => {
+        const { channelRef, channelName, channelDetails, user } = this.state;
+        const key = channelRef.push().key;
+
+        const newChannel = {
+            id: key,
+            name: channelName,
+            details: channelDetails,
+            createdBy: {
+                name: user.displayName,
+                avatar: user.photoURL
+            }
+        };
+
+        channelRef
+            .child(key)
+            .update(newChannel)
+            .then(() => {
+                this.setState({ channelName: '', channelDetails: '' });
+                this.closeModal();
+                console.log("channel added!");
+            })
+            .catch((err) => console.log(err))
+    }
+    
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
-    closeModal = () => {
-        this.setState({
-            modal: false
-        })
+    handleSubmit = (event) => {
+        event.preventDefault();
+        if (this.isFromValid(this.state)) {
+
+            this.addChannel()
+            
+        }
     }
 
-    openmodal = () => {
-        this.setState({
-            modal: true
-        })
-    }
+    isFromValid = ({ channelName, channelDetails }) => channelName && channelDetails;
 
     render() {
         const { channels, modal } = this.state;
@@ -57,13 +98,13 @@ class Channels extends Component {
                 </Menu.Menu>
 
                 {/* // Add Channel  */}
-                <Transition animation="fade up">
+                <Transition animation="fade up" duration={1000}>
 
                 
                     <Modal basic open={modal} onClose={this.closeModal}>
                         <Modal.Content>
 
-                            <Form>
+                            <Form onSubmit={this.handleSubmit}>
                                 <Form.Field>
                                     <Input
                                         fluid
@@ -93,7 +134,7 @@ class Channels extends Component {
 
                         <Modal.Actions>
 
-                            <Button color="green" inverted>
+                            <Button color="green" inverted onClick={this.handleSubmit}>
                                 <Icon name="checkmark" /> Add
                             </Button>
                             <Button color="red" inverted onClick={this.closeModal} >
