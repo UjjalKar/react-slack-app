@@ -21,13 +21,13 @@ class Channels extends Component {
         channelRef: firebase.database().ref('channels')
     }
 
-    
+
     closeModal = () => {
         this.setState({
             modal: false
         })
     }
-    
+
     openmodal = () => {
         this.setState({
             modal: true
@@ -58,7 +58,7 @@ class Channels extends Component {
             })
             .catch((err) => console.log(err))
     }
-    
+
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
@@ -70,7 +70,7 @@ class Channels extends Component {
         if (this.isFromValid(this.state)) {
 
             this.addChannel()
-            
+
         }
     }
 
@@ -82,7 +82,7 @@ class Channels extends Component {
         return (
             <React.Fragment>
                 <Menu.Menu style={{ paddingBottom: '2em' }} >
-                    
+
                     <Menu.Item>
 
                         <span>
@@ -100,7 +100,7 @@ class Channels extends Component {
                 {/* // Add Channel  */}
                 <Transition animation="fade up" duration={1000}>
 
-                
+
                     <Modal basic open={modal} onClose={this.closeModal}>
                         <Modal.Content>
 
@@ -145,7 +145,7 @@ class Channels extends Component {
                     </Modal>
                 </Transition>
             </React.Fragment>
-            
+
         );
     }
 }
