@@ -29,12 +29,21 @@ class Channels extends Component {
         this.addListeners();
     }
 
+    // When componet Unmount we have to remove all listeners
+    componentWillUnmount() {
+        this.removeListeners();
+    }
+
     addListeners = () => {
         let loadedChannels = [];
         this.state.channelRef.on('child_added', snap => {
             loadedChannels.push(snap.val());
             this.setState({ channels: loadedChannels }, () => this.setFirstChannel());
         });
+    }
+
+    removeListeners = () => {
+        this.state.channelRef.off();
     }
 
     setFirstChannel = () => {
