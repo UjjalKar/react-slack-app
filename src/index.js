@@ -9,6 +9,7 @@ import firebase from './firebase';
 
 import 'semantic-ui-css/semantic.min.css';
 
+/* 24 */
 // 1) 1st setup some routing
 import { 
     BrowserRouter as Router, 
