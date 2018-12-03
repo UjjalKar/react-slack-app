@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import * as actionTypes from '../actions/types';
 
+
+/* last did 29 */
 const initialUserState = {
     currentUser: null,
     isLoading: true
@@ -24,7 +26,7 @@ const user_reducer = (state = initialUserState, action) => {
 }
 
 const initialChannelState = {
-    curentChannel: null,
+    currentChannel: null,
 };
 
 
@@ -33,7 +35,7 @@ const channel_reducer = (state = initialChannelState, action) => {
         case actionTypes.SET_CURRENT_CHANNEL:
             return {
                 ...state,
-                curentChannel: action.payload.currentChannel
+                currentChannel: action.payload.currentChannel
             }
             
     
