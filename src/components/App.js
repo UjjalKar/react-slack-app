@@ -9,7 +9,7 @@ import Messages from './Messages/Messages';
 import MetaPanel from './MetaPanel/MetaPanel';
 
 
-/* Last did 07 */
+
 
 const App = ({ currentUser, currentChannel }) => (
   <Grid columns="equal" className="app" style={{ background: '#eee' }} >
