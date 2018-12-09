@@ -4,6 +4,7 @@ import firebase from '../../firebase';
 import { Segment, Button, Input } from 'semantic-ui-react';
 
 import FileModal from './FileModal';
+import ProgressBar from './ProgressBar';
 
 class MessageFrom extends Component {
     state = {
@@ -82,11 +83,12 @@ class MessageFrom extends Component {
         const filePath = `chat/public/${uuidv4()}.jpg`
 
         this.setState({
-            uploadState: 'uploading..',
+            uploadState: 'uploading',
             uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
         }, () => {
             this.state.uploadTask.on('state_changed', snap => {
                 const percentUpload = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+                this.props.isProgressBarVisible(percentUpload)
                 this.setState({ percentUpload })
             },
                 (err) => {
@@ -131,28 +133,27 @@ class MessageFrom extends Component {
     }
 
     render() {
-
-        const { errors, message, loading, modal } = this.state;
+        // Prettier ignore
+        const {
+            errors,
+            message,
+            loading,
+            modal,
+            uploadState,
+            percentUpload
+        } = this.state;
 
         return (
             <Segment className="message__form">
                 <Input
                     fluid
-                    
                     name="message"
-
                     style={{ marginBottom: '0.7em' }}
-
-                    label={<Button icon={"add"} />}
-                    
-                    labelPosition="left"
-                    
-                    value={message}
-                    
-                    placeholder="Write your message!"
-                    
-                    onChange={this.handleChange}
-                    
+                    label={<Button icon={"add"} />}                   
+                    labelPosition="left"                    
+                    value={message}                    
+                    placeholder="Write your message!"                   
+                    onChange={this.handleChange}                    
                     className={
                         errors.some(error => error.message.includes('message')) ? 'error' : ''
                     }
@@ -172,18 +173,24 @@ class MessageFrom extends Component {
 
                     <Button
                         color="teal"
+                        disabled={uploadState === 'uploading'}
                         onClick={this.openModal}
                         content="Upload Media"
                         labelPosition="right"
                         icon="cloud upload"
                     />
-                    <FileModal
-                        modal={modal}
-                        closeModal={this.closeModal}
-                        upLoadFile={this.upLoadFile}
-                    />
                     
                 </Button.Group>
+                <FileModal
+                    modal={modal}
+                    closeModal={this.closeModal}
+                    upLoadFile={this.upLoadFile}
+                />
+                <ProgressBar
+                    uploadState={uploadState}
+                    percentUpload={percentUpload}
+                />
+                
             </Segment>
         )
     }
