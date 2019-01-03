@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
-import { Segment, Header, Icon, Input } from 'semantic-ui-react';
+import { 
+    Segment, 
+    Header, 
+    Icon, 
+    Input 
+} from 'semantic-ui-react';
 
 class MessagesHeader extends Component {
     render() {
-        const { channelName, numUniqueUsers } = this.props;
+        const { 
+            channelName, 
+            numUniqueUsers, 
+            handleSearchChange, 
+            searchLoading,
+            isPrivateChannel 
+        } = this.props;
         return (
             // clearing work likeclear fix
             <Segment clearing>
@@ -18,7 +29,7 @@ class MessagesHeader extends Component {
                 >
                     <span>
                         {channelName}
-                        <Icon name={"star outline"} color="black" />
+                        {!isPrivateChannel && <Icon name={"star outline"} color="black" />}
                     </span>
 
                     <Header.Subheader>{numUniqueUsers}</Header.Subheader>
@@ -31,6 +42,8 @@ class MessagesHeader extends Component {
                         icon="search"
                         name="searchTerm"
                         placeholder="Search Message"
+                        onChange={handleSearchChange}
+                        loading={searchLoading}
                     />
                 </Header>
 

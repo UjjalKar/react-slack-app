@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { setCurrentChannel } from '../../actions';
+import { setCurrentChannel, setPrivateChannel } from '../../actions';
 import {
     Menu,
     Icon,
     Modal,
     Form,
     Input,
-    Button,
-    Transition
+    Button
 } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
@@ -112,6 +111,7 @@ class Channels extends Component {
     changeChannel = channel => {
         this.setActiveChannel(channel);
         this.props.setCurrentChannel(channel);
+        this.props.setPrivateChannel(false);
     }
 
     setActiveChannel = channel => {
@@ -139,16 +139,11 @@ class Channels extends Component {
 
         return (
             <React.Fragment>
-                <Menu.Menu style={{ paddingBottom: '2em' }} >
-
+                <Menu.Menu className="menu" >
                     <Menu.Item>
-
                         <span>
-
                             <Icon name="exchange" /> CHANNELS
-
                         </span>{" "}
-
                         ({channels.length}) <Icon name="add" onClick={this.openmodal} style={{ cursor: 'pointer' }} />
 
                     </Menu.Item>
@@ -156,21 +151,14 @@ class Channels extends Component {
                 </Menu.Menu>
 
                 {/* // Add Channel  */}
-                <Transition animation="fade up" duration={1000}>
-
-
                     <Modal basic open={modal} onClose={this.closeModal}>
                         <Modal.Content>
-
                             <Form onSubmit={this.handleSubmit}>
                                 <Form.Field>
                                     <Input
                                         fluid
-
                                         label="Name of Channel"
-
                                         name="channelName"
-
                                         onChange={this.handleChange}
                                     />
                                 </Form.Field>
@@ -178,11 +166,8 @@ class Channels extends Component {
                                 <Form.Field>
                                     <Input
                                         fluid
-
                                         label="About channel"
-
                                         name="channelDetails"
-
                                         onChange={this.handleChange}
                                     />
                                 </Form.Field>
@@ -201,11 +186,10 @@ class Channels extends Component {
 
                         </Modal.Actions>
                     </Modal>
-                </Transition>
             </React.Fragment>
 
         );
     }
 }
 
-export default connect(null, { setCurrentChannel })(Channels);
+export default connect(null, { setCurrentChannel, setPrivateChannel })(Channels);
